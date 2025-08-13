@@ -109,8 +109,8 @@ struct Narrative: Identifiable, Codable {
     }
 }
 
-// MARK: - Task Model
-struct Task: Identifiable, Codable {
+// MARK: - ProjectTask Model
+struct ProjectTask: Identifiable, Codable {
     let id: UUID
     var title: String
     var status: String
@@ -166,11 +166,16 @@ enum TaskStatus: String, CaseIterable {
 enum TemplateCategory: String, CaseIterable {
     case clients = "Clients"
     case investors = "Investors"
-    case public = "Public"
+    case publicAudience = "Public"
     case partners = "Partners"
     case lobbyists = "Lobbyists"
     
-    var displayName: String { rawValue }
+    var displayName: String { 
+        switch self {
+        case .publicAudience: return "Public"
+        default: return rawValue
+        }
+    }
 }
 
 enum NarrativeType: String, CaseIterable {

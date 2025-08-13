@@ -87,15 +87,12 @@ struct MasterIndexView: View {
             } else {
                 List {
                     ForEach(filteredChats) { chat in
-                        ChatRowView(chat: chat) { updatedChat in
-                            Task {
-                                await supabaseManager.updateChat(updatedChat)
-                            }
-                        } onDelete: {
-                            Task {
-                                await supabaseManager.deleteChat(chat)
-                            }
-                        }
+                        ChatRowView(chat: chat, onUpdate: { updatedChat in
+                            supabaseManager.updateChat(updatedChat)
+                        }, onDelete: {
+                            supabaseManager.deleteChat(chat)
+                        })
+                        .listRowInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
                     }
                 }
                 .listStyle(.plain)
@@ -103,17 +100,13 @@ struct MasterIndexView: View {
         }
         .sheet(isPresented: $showAddChat) {
             AddChatView(chat: $newChat) {
-                Task {
-                    await supabaseManager.createChat(newChat)
-                    newChat = Chat(title: "", categoryNumber: 1)
-                    showAddChat = false
-                }
+                supabaseManager.createChat(newChat)
+                newChat = Chat(title: "", categoryNumber: 1)
+                showAddChat = false
             }
         }
         .onAppear {
-            Task {
-                await supabaseManager.loadChats()
-            }
+            supabaseManager.loadChats()
         }
     }
 }
@@ -138,10 +131,11 @@ struct ChatRowView: View {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
                     Text("#\(chat.categoryNumber)")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.secondary)
-                        .frame(width: 30, alignment: .leading)
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                        .frame(width: 50, alignment: .leading)
+                        .padding(.trailing, 10)
                     
                     if isEditing {
                         TextField("Title", text: $editedChat.title)
@@ -215,6 +209,7 @@ struct ChatRowView: View {
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
+                        .foregroundColor(.secondary)
                         
                         Button("Delete") {
                             onDelete()
@@ -226,7 +221,9 @@ struct ChatRowView: View {
                 }
             }
         }
-        .padding(.vertical, 5)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .cornerRadius(8)
     }
 }
 
@@ -266,7 +263,13 @@ struct AddChatView: View {
                 Section("Chat Details") {
                     TextField("Title", text: $chat.title)
                     
-                    Stepper("Category Number: \(chat.categoryNumber)", value: $chat.categoryNumber, in: 1...999)
+                    HStack {
+                        Text("Category Number:")
+                            .font(.headline)
+                        Spacer()
+                        Stepper("\(chat.categoryNumber)", value: $chat.categoryNumber, in: 1...999)
+                            .labelsHidden()
+                    }
                     
                     Picker("Status", selection: $chat.status) {
                         Text("Active").tag("active")
@@ -287,7 +290,7 @@ struct AddChatView: View {
                 }
             }
             .navigationTitle("Add New Chat")
-            .navigationBarTitleDisplayMode(.inline)
+
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {

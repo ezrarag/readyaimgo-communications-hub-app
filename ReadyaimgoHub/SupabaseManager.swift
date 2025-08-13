@@ -1,50 +1,11 @@
 import Foundation
 import SwiftUI
 
-// MARK: - Placeholder Types (to be replaced with actual Supabase types)
+// MARK: - User Type (to be replaced with actual Supabase User type)
 struct User {
     let id: String
     let email: String
     let name: String?
-}
-
-struct Chat {
-    let id: String
-    let title: String
-    let number: String
-    let status: String
-    let createdAt: Date
-}
-
-struct Communication {
-    let id: String
-    let audience: String
-    let purpose: String
-    let tone: String
-    let keyPoints: String
-    let risks: String
-}
-
-struct Template {
-    let id: String
-    let title: String
-    let content: String
-    let category: String
-}
-
-struct Narrative {
-    let id: String
-    let title: String
-    let content: String
-    let type: String
-}
-
-struct Task {
-    let id: String
-    let title: String
-    let description: String
-    let priority: String
-    let status: String
 }
 
 class SupabaseManager: ObservableObject {
@@ -62,7 +23,7 @@ class SupabaseManager: ObservableObject {
     @Published var communications: [Communication] = []
     @Published var templates: [Template] = []
     @Published var narratives: [Narrative] = []
-    @Published var tasks: [Task] = []
+    @Published var tasks: [ProjectTask] = []
     
     init() {
         loadMockData()
@@ -81,29 +42,29 @@ class SupabaseManager: ObservableObject {
     private func loadMockData() {
         // Load sample data for development
         chats = [
-            Chat(id: "1", title: "Product Launch", number: "CHAT-001", status: "Active", createdAt: Date()),
-            Chat(id: "2", title: "Investor Meeting", number: "CHAT-002", status: "Planning", createdAt: Date()),
-            Chat(id: "3", title: "Team Retrospective", number: "CHAT-003", status: "Completed", createdAt: Date())
+            Chat(id: UUID(), title: "Product Launch", categoryNumber: 1, status: "active"),
+            Chat(id: UUID(), title: "Investor Meeting", categoryNumber: 2, status: "pending"),
+            Chat(id: UUID(), title: "Team Retrospective", categoryNumber: 3, status: "completed")
         ]
         
         communications = [
-            Communication(id: "1", audience: "Investors", purpose: "Funding Update", tone: "Professional", keyPoints: "Growth metrics, market expansion", risks: "Market volatility"),
-            Communication(id: "2", audience: "Customers", purpose: "Product Update", tone: "Friendly", keyPoints: "New features, improved UX", risks: "User adoption")
+            Communication(id: UUID(), audience: "Investors", purpose: "Funding Update", tone: "professional", keyPoints: ["Growth metrics", "Market expansion"], risks: ["Market volatility"]),
+            Communication(id: UUID(), audience: "Customers", purpose: "Product Update", tone: "friendly", keyPoints: ["New features", "Improved UX"], risks: ["User adoption"])
         ]
         
         templates = [
-            Template(id: "1", title: "Investor Pitch", content: "We are excited to share...", category: "Investors"),
-            Template(id: "2", title: "Customer Newsletter", content: "Thank you for your support...", category: "Customers")
+            Template(id: UUID(), category: "Investors", shortVersion: "We are excited to share..."),
+            Template(id: UUID(), category: "Customers", shortVersion: "Thank you for your support...")
         ]
         
         narratives = [
-            Narrative(id: "1", title: "Mission Statement", content: "To revolutionize communication...", type: "Mission"),
-            Narrative(id: "2", title: "Origin Story", content: "It all began when...", type: "Origin")
+            Narrative(id: UUID(), type: "mission", content: "To revolutionize communication..."),
+            Narrative(id: UUID(), type: "origin_story", content: "It all began when...")
         ]
         
         tasks = [
-            Task(id: "1", title: "Prepare Q4 Report", description: "Compile quarterly metrics", priority: "High", status: "Now"),
-            Task(id: "2", title: "Update Website", description: "Refresh content and design", priority: "Medium", status: "Next")
+            ProjectTask(id: UUID(), title: "Prepare Q4 Report", status: "now", description: "Compile quarterly metrics", priority: 1),
+            ProjectTask(id: UUID(), title: "Update Website", status: "next", description: "Refresh content and design", priority: 2)
         ]
     }
     
@@ -165,6 +126,15 @@ class SupabaseManager: ObservableObject {
         chats.append(chat)
     }
     
+    func createChat(_ chat: Chat) {
+        addChat(chat)
+    }
+    
+    func loadChats() {
+        // In mock mode, chats are already loaded in init
+        // This would typically fetch from Supabase
+    }
+    
     func updateChat(_ chat: Chat) {
         if let index = chats.firstIndex(where: { $0.id == chat.id }) {
             chats[index] = chat
@@ -217,17 +187,53 @@ class SupabaseManager: ObservableObject {
         narratives.removeAll { $0.id == narrative.id }
     }
     
-    func addTask(_ task: Task) {
+    func createNarrative(_ narrative: Narrative) async {
+        addNarrative(narrative)
+    }
+    
+    func createCommunication(_ communication: Communication) async {
+        addCommunication(communication)
+    }
+    
+    func loadCommunications() async {
+        // In mock mode, communications are already loaded in init
+        // This would typically fetch from Supabase
+    }
+    
+    func createTemplate(_ template: Template) async {
+        addTemplate(template)
+    }
+    
+    func loadTemplates() async {
+        // In mock mode, templates are already loaded in init
+        // This would typically fetch from Supabase
+    }
+    
+    func addTask(_ task: ProjectTask) {
         tasks.append(task)
     }
     
-    func updateTask(_ task: Task) {
+    func createTask(_ task: ProjectTask) {
+        addTask(task)
+    }
+    
+    func loadTasks() async {
+        // In mock mode, tasks are already loaded in init
+        // This would typically fetch from Supabase
+    }
+    
+    func loadNarratives() async {
+        // In mock mode, narratives are already loaded in init
+        // This would typically fetch from Supabase
+    }
+    
+    func updateTask(_ task: ProjectTask) async {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index] = task
         }
     }
     
-    func deleteTask(_ task: Task) {
+    func deleteTask(_ task: ProjectTask) async {
         tasks.removeAll { $0.id == task.id }
     }
 }

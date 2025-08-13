@@ -29,12 +29,9 @@ struct AuthView: View {
                 VStack(spacing: 15) {
                     TextField("Email", text: $email)
                         .textFieldStyle(.roundedBorder)
-                        .textContentType(.emailAddress)
-                        .autocapitalization(.none)
                     
                     SecureField("Password", text: $password)
                         .textFieldStyle(.roundedBorder)
-                        .textContentType(isSignUp ? .newPassword : .password)
                 }
                 
                 Button(action: performAuth) {
@@ -115,7 +112,7 @@ struct AuthView: View {
         }
         .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemBackground))
+        .background(Color(.windowBackgroundColor))
     }
     
     private func performAuth() {
@@ -161,7 +158,7 @@ struct FeatureCard: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(Color(.secondarySystemBackground))
+        .background(Color(.controlBackgroundColor))
         .cornerRadius(12)
     }
 }

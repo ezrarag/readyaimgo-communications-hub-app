@@ -1,13 +1,14 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct PriorityBoardView: View {
     @EnvironmentObject var supabaseManager: SupabaseManager
     
     @State private var showAddTask = false
-    @State private var newTask = Task(title: "", status: "later")
-    @State private var draggedTask: Task?
+    @State private var newTask = ProjectTask(title: "", status: "later")
+    @State private var draggedTask: ProjectTask?
     
-    var tasksByStatus: [String: [Task]] {
+    var tasksByStatus: [String: [ProjectTask]] {
         Dictionary(grouping: supabaseManager.tasks) { $0.status }
     }
     
@@ -52,25 +53,31 @@ struct PriorityBoardView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 HStack(alignment: .top, spacing: 20) {
-                    ForEach(TaskStatus.allCases, id: \.self) { status in
+                    ForEach(TaskStatus.allCases, id: \.self) { taskStatus in
                         KanbanColumn(
-                            status: status,
-                            tasks: tasksByStatus[status.rawValue] ?? [],
+                            status: taskStatus,
+                            tasks: tasksByStatus[taskStatus.rawValue] ?? [],
                             onTaskUpdate: { updatedTask in
-                                Task {
-                                    await supabaseManager.updateTask(updatedTask)
+                                DispatchQueue.main.async {
+                                    Task {
+                                        await supabaseManager.updateTask(updatedTask)
+                                    }
                                 }
                             },
                             onTaskDelete: { task in
-                                Task {
-                                    await supabaseManager.deleteTask(task)
+                                DispatchQueue.main.async {
+                                    Task {
+                                        await supabaseManager.deleteTask(task)
+                                    }
                                 }
                             },
                             onDrop: { task in
                                 var updatedTask = task
-                                updatedTask.status = status.rawValue
-                                Task {
-                                    await supabaseManager.updateTask(updatedTask)
+                                updatedTask.status = taskStatus.rawValue
+                                DispatchQueue.main.async {
+                                    Task {
+                                        await supabaseManager.updateTask(updatedTask)
+                                    }
                                 }
                             }
                         )
@@ -81,16 +88,20 @@ struct PriorityBoardView: View {
         }
         .sheet(isPresented: $showAddTask) {
             AddTaskView(task: $newTask) {
-                Task {
-                    await supabaseManager.createTask(newTask)
-                    newTask = Task(title: "", status: "later")
-                    showAddTask = false
+                DispatchQueue.main.async {
+                    Task {
+                        await supabaseManager.createTask(newTask)
+                        newTask = ProjectTask(title: "", status: "later")
+                        showAddTask = false
+                    }
                 }
             }
         }
         .onAppear {
-            Task {
-                await supabaseManager.loadTasks()
+            DispatchQueue.main.async {
+                Task {
+                    await supabaseManager.loadTasks()
+                }
             }
         }
     }
@@ -98,10 +109,10 @@ struct PriorityBoardView: View {
 
 struct KanbanColumn: View {
     let status: TaskStatus
-    let tasks: [Task]
-    let onTaskUpdate: (Task) -> Void
-    let onTaskDelete: (Task) -> Void
-    let onDrop: (Task) -> Void
+    let tasks: [ProjectTask]
+    let onTaskUpdate: (ProjectTask) -> Void
+    let onTaskDelete: (ProjectTask) -> Void
+    let onDrop: (ProjectTask) -> Void
     
     var body: some View {
         VStack(spacing: 15) {
@@ -137,7 +148,7 @@ struct KanbanColumn: View {
                     TaskCardView(
                         task: task,
                         onUpdate: onTaskUpdate,
-                        onDelete: onTaskDelete
+                        onDelete: { onTaskDelete(task) }
                     )
                     .onDrag {
                         NSItemProvider(object: TaskItemProvider(task: task))
@@ -149,21 +160,21 @@ struct KanbanColumn: View {
         }
         .frame(width: 300)
         .padding()
-        .background(Color(.secondarySystemBackground))
+        .background(Color(NSColor.controlBackgroundColor))
         .cornerRadius(12)
         .onDrop(of: [.text], delegate: TaskDropDelegate(onDrop: onDrop))
     }
 }
 
 struct TaskCardView: View {
-    let task: Task
-    let onUpdate: (Task) -> Void
+    let task: ProjectTask
+    let onUpdate: (ProjectTask) -> Void
     let onDelete: () -> Void
     
     @State private var isEditing = false
-    @State private var editedTask: Task
+    @State private var editedTask: ProjectTask
     
-    init(task: Task, onUpdate: @escaping (Task) -> Void, onDelete: @escaping () -> Void) {
+    init(task: ProjectTask, onUpdate: @escaping (ProjectTask) -> Void, onDelete: @escaping () -> Void) {
         self.task = task
         self.onUpdate = onUpdate
         self.onDelete = onDelete
@@ -192,12 +203,20 @@ struct TaskCardView: View {
             // Description
             if let description = task.description, !description.isEmpty {
                 if isEditing {
-                    TextField("Description", text: Binding(
-                        get: { editedTask.description ?? "" },
-                        set: { editedTask.description = $0.isEmpty ? nil : $0 }
-                    ), axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .lineLimit(2...4)
+                    if #available(macOS 13.0, *) {
+                        TextField("Description", text: Binding(
+                            get: { editedTask.description ?? "" },
+                            set: { editedTask.description = $0.isEmpty ? nil : $0 }
+                        ), axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(2...4)
+                    } else {
+                        TextField("Description", text: Binding(
+                            get: { editedTask.description ?? "" },
+                            set: { editedTask.description = $0.isEmpty ? nil : $0 }
+                        ))
+                        .textFieldStyle(.roundedBorder)
+                    }
                 } else {
                     Text(description)
                         .font(.caption)
@@ -268,7 +287,7 @@ struct TaskCardView: View {
             }
         }
         .padding()
-        .background(Color(.systemBackground))
+        .background(Color(NSColor.windowBackgroundColor))
         .cornerRadius(8)
         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
     }
@@ -298,7 +317,7 @@ struct PriorityBadge: View {
 }
 
 struct AddTaskView: View {
-    @Binding var task: Task
+    @Binding var task: ProjectTask
     let onSave: () -> Void
     @Environment(\.dismiss) private var dismiss
     
@@ -328,15 +347,21 @@ struct AddTaskView: View {
                         set: { task.deadline = $0 }
                     ), displayedComponents: .date)
                     
-                    TextField("Description (optional)", text: Binding(
-                        get: { task.description ?? "" },
-                        set: { task.description = $0.isEmpty ? nil : $0 }
-                    ), axis: .vertical)
-                    .lineLimit(3...6)
+                    if #available(macOS 13.0, *) {
+                        TextField("Description (optional)", text: Binding(
+                            get: { task.description ?? "" },
+                            set: { task.description = $0.isEmpty ? nil : $0 }
+                        ), axis: .vertical)
+                        .lineLimit(3...6)
+                    } else {
+                        TextField("Description (optional)", text: Binding(
+                            get: { task.description ?? "" },
+                            set: { task.description = $0.isEmpty ? nil : $0 }
+                        ))
+                    }
                 }
             }
             .navigationTitle("Add New Task")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -357,10 +382,15 @@ struct AddTaskView: View {
 }
 
 // MARK: - Drag and Drop Support
-struct TaskItemProvider: NSItemProviderWriting {
+class TaskItemProvider: NSObject, NSItemProviderWriting {
     static let writableTypeIdentifiersForItemProvider = [UTType.text.identifier]
     
-    let task: Task
+    let task: ProjectTask
+    
+    init(task: ProjectTask) {
+        self.task = task
+        super.init()
+    }
     
     func loadData(withTypeIdentifier typeIdentifier: String, forItemProviderCompletionHandler completionHandler: @escaping (Data?, Error?) -> Void) -> Progress? {
         if typeIdentifier == UTType.text.identifier {
@@ -374,14 +404,14 @@ struct TaskItemProvider: NSItemProviderWriting {
 }
 
 struct TaskDropDelegate: DropDelegate {
-    let onDrop: (Task) -> Void
+    let onDrop: (ProjectTask) -> Void
     
     func performDrop(info: DropInfo) -> Bool {
         guard let itemProvider = info.itemProviders(for: [UTType.text]).first else { return false }
         
         itemProvider.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { data, error in
             if let data = data as? Data,
-               let task = try? JSONDecoder().decode(Task.self, from: data) {
+               let task = try? JSONDecoder().decode(ProjectTask.self, from: data) {
                 DispatchQueue.main.async {
                     onDrop(task)
                 }

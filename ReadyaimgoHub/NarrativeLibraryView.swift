@@ -154,9 +154,12 @@ struct NarrativeCardView: View {
             
             // Content
             if isEditing {
-                TextField("Content", text: $editedNarrative.content, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .lineLimit(5...10)
+                if #available(macOS 13.0, *) {
+                    TextField("Content", text: $editedNarrative.content, axis: .vertical)
+                        .lineLimit(5...10)
+                } else {
+                    TextField("Content", text: $editedNarrative.content)
+                }
             } else {
                 Text(narrative.content)
                     .font(.body)
@@ -181,7 +184,7 @@ struct NarrativeCardView: View {
             }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
+        .background(Color(NSColor.controlBackgroundColor))
         .cornerRadius(12)
     }
     
@@ -223,7 +226,7 @@ struct EmptyNarrativeCard: View {
         }
         .frame(maxWidth: .infinity, minHeight: 150)
         .padding()
-        .background(Color(.tertiarySystemBackground))
+        .background(Color(NSColor.controlBackgroundColor))
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
@@ -247,12 +250,15 @@ struct AddNarrativeView: View {
                         }
                     }
                     
-                    TextField("Content", text: $narrative.content, axis: .vertical)
-                        .lineLimit(5...15)
+                    if #available(macOS 13.0, *) {
+                        TextField("Content", text: $narrative.content, axis: .vertical)
+                            .lineLimit(5...15)
+                    } else {
+                        TextField("Content", text: $narrative.content)
+                    }
                 }
             }
             .navigationTitle("Add Narrative")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -269,25 +275,6 @@ struct AddNarrativeView: View {
             }
         }
         .frame(width: 500, height: 300)
-    }
-}
-
-// MARK: - Extensions
-extension SupabaseManager {
-    func createNarrative(_ narrative: Narrative) async {
-        guard let supabase = supabase else { return }
-        
-        do {
-            let response: Narrative = try await supabase
-                .from("narratives")
-                .insert(narrative)
-                .execute()
-                .value
-            
-            self.narratives.insert(response, at: 0)
-        } catch {
-            errorMessage = "Failed to create narrative: \(error.localizedDescription)"
-        }
     }
 }
 

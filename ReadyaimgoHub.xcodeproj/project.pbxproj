@@ -7,45 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1234567890123456789012A /* ReadyaimgoHubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789012B /* ReadyaimgoHubApp.swift */; };
-		A1234567890123456789012C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789012D /* ContentView.swift */; };
-		A1234567890123456789012E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789012F /* Assets.xcassets */; };
-		A1234567890123456789013A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789013B /* Preview Assets.xcassets */; };
-		A1234567890123456789013C /* SupabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789013D /* SupabaseManager.swift */; };
-		A1234567890123456789013E /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789013F /* OpenAIManager.swift */; };
-		A1234567890123456789014A /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789014B /* Models.swift */; };
-		A1234567890123456789014C /* MasterIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789014D /* MasterIndexView.swift */; };
-		A1234567890123456789014E /* CommunicationMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789014F /* CommunicationMatrixView.swift */; };
-		A1234567890123456789015A /* TemplateLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789015B /* TemplateLibraryView.swift */; };
-		A1234567890123456789015C /* PriorityBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789015D /* PriorityBoardView.swift */; };
-		A1234567890123456789015E /* NarrativeLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789015F /* NarrativeLibraryView.swift */; };
-		A1234567890123456789016A /* ConfidentialPlaybookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789016B /* ConfidentialPlaybookView.swift */; };
-		A1234567890123456789016C /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789016D /* AuthView.swift */; };
-		A1234567890123456789016E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890123456789016F /* KeychainManager.swift */; };
+		826A270A0A414B1C964C2F20 /* ReadyaimgoHubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A270B0A414B1C964C2F21 /* ReadyaimgoHubApp.swift */; };
+		826A270C0A414B1C964C2F22 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A270D0A414B1C964C2F23 /* ContentView.swift */; };
+		826A270E0A414B1C964C2F24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 826A270F0A414B1C964C2F25 /* Assets.xcassets */; };
+		826A27100A414B1C964C2F26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 826A27110A414B1C964C2F27 /* Preview Assets.xcassets */; };
+		826A27220A414B1C964C2F38 /* SupabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27230A414B1C964C2F39 /* SupabaseManager.swift */; };
+		826A27240A414B1C964C2F3A /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27250A414B1C964C2F3B /* OpenAIManager.swift */; };
+		826A27260A414B1C964C2F3C /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27270A414B1C964C2F3D /* AuthManager.swift */; };
+		826A27280A414B1C964C2F3E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27290A414B1C964C2F3F /* Models.swift */; };
+		826A272A0A414B1C964C2F40 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A272B0A414B1C964C2F41 /* KeychainManager.swift */; };
+		826A272C0A414B1C964C2F42 /* MasterIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A272D0A414B1C964C2F43 /* MasterIndexView.swift */; };
+		826A272E0A414B1C964C2F44 /* CommunicationMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A272F0A414B1C964C2F45 /* CommunicationMatrixView.swift */; };
+		826A27300A414B1C964C2F46 /* TemplateLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27310A414B1C964C2F47 /* TemplateLibraryView.swift */; };
+		826A27320A414B1C964C2F48 /* PriorityBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27330A414B1C964C2F49 /* PriorityBoardView.swift */; };
+		826A27340A414B1C964C2F4A /* NarrativeLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27350A414B1C964C2F4B /* NarrativeLibraryView.swift */; };
+		826A27360A414B1C964C2F4C /* ConfidentialPlaybookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27370A414B1C964C2F4D /* ConfidentialPlaybookView.swift */; };
+		826A27380A414B1C964C2F4E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A27390A414B1C964C2F4F /* AuthView.swift */; };
+		826A273A0A414B1C964C2F50 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826A273B0A414B1C964C2F51 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A1234567890123456789012A /* ReadyaimgoHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadyaimgoHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1234567890123456789012B /* ReadyaimgoHubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyaimgoHubApp.swift; sourceTree = "<group>"; };
-		A1234567890123456789012D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A1234567890123456789012F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1234567890123456789013B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A1234567890123456789013D /* SupabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseManager.swift; sourceTree = "<group>"; };
-		A1234567890123456789013F /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
-		A1234567890123456789014B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		A1234567890123456789014D /* MasterIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterIndexView.swift; sourceTree = "<group>"; };
-		A1234567890123456789014F /* CommunicationMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationMatrixView.swift; sourceTree = "<group>"; };
-		A1234567890123456789015B /* TemplateLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateLibraryView.swift; sourceTree = "<group>"; };
-		A1234567890123456789015D /* PriorityBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityBoardView.swift; sourceTree = "<group>"; };
-		A1234567890123456789015F /* NarrativeLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NarrativeLibraryView.swift; sourceTree = "<group>"; };
-		A1234567890123456789016B /* ConfidentialPlaybookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidentialPlaybookView.swift; sourceTree = "<group>"; };
-		A1234567890123456789016D /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
-		A1234567890123456789016F /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
-		A1234567890123456789017A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		826A27120A414B1C964C2F28 /* ReadyaimgoHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadyaimgoHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		826A270B0A414B1C964C2F21 /* ReadyaimgoHubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyaimgoHubApp.swift; sourceTree = "<group>"; };
+		826A270D0A414B1C964C2F23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		826A270F0A414B1C964C2F25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		826A27110A414B1C964C2F27 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		826A27130A414B1C964C2F29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		826A27230A414B1C964C2F39 /* SupabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseManager.swift; sourceTree = "<group>"; };
+		826A27250A414B1C964C2F3B /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
+		826A27270A414B1C964C2F3D /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		826A27290A414B1C964C2F3F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		826A272B0A414B1C964C2F41 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		826A272D0A414B1C964C2F43 /* MasterIndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterIndexView.swift; sourceTree = "<group>"; };
+		826A272F0A414B1C964C2F45 /* CommunicationMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationMatrixView.swift; sourceTree = "<group>"; };
+		826A27310A414B1C964C2F47 /* TemplateLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateLibraryView.swift; sourceTree = "<group>"; };
+		826A27330A414B1C964C2F49 /* PriorityBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityBoardView.swift; sourceTree = "<group>"; };
+		826A27350A414B1C964C2F4B /* NarrativeLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NarrativeLibraryView.swift; sourceTree = "<group>"; };
+		826A27370A414B1C964C2F4D /* ConfidentialPlaybookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidentialPlaybookView.swift; sourceTree = "<group>"; };
+		826A27390A414B1C964C2F4F /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		826A273B0A414B1C964C2F51 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A1234567890123456789012G /* Frameworks */ = {
+		826A27140A414B1C964C2F2A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -55,41 +59,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A1234567890123456789012H = {
+		826A27150A414B1C964C2F2B = {
 			isa = PBXGroup;
 			children = (
-				A1234567890123456789012I /* ReadyaimgoHub */,
-				A1234567890123456789012J /* Products */,
+				826A27160A414B1C964C2F2C /* ReadyaimgoHub */,
+				826A27170A414B1C964C2F2D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A1234567890123456789012I /* ReadyaimgoHub */ = {
+		826A27160A414B1C964C2F2C /* ReadyaimgoHub */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890123456789012B /* ReadyaimgoHubApp.swift */,
-				A1234567890123456789012D /* ContentView.swift */,
-				A1234567890123456789013D /* SupabaseManager.swift */,
-				A1234567890123456789013F /* OpenAIManager.swift */,
-				A1234567890123456789014B /* Models.swift */,
-				A1234567890123456789014D /* MasterIndexView.swift */,
-				A1234567890123456789014E /* CommunicationMatrixView.swift */,
-				A1234567890123456789015A /* TemplateLibraryView.swift */,
-				A1234567890123456789015B /* PriorityBoardView.swift */,
-				A1234567890123456789015C /* NarrativeLibraryView.swift */,
-				A1234567890123456789015D /* ConfidentialPlaybookView.swift */,
-				A1234567890123456789015E /* AuthView.swift */,
-				A1234567890123456789015F /* KeychainManager.swift */,
-				A1234567890123456789012F /* Assets.xcassets */,
-				A1234567890123456789017A /* Info.plist */,
-				A1234567890123456789013B /* Preview Assets.xcassets */,
+				826A270B0A414B1C964C2F21 /* ReadyaimgoHubApp.swift */,
+				826A270D0A414B1C964C2F23 /* ContentView.swift */,
+				826A27230A414B1C964C2F39 /* SupabaseManager.swift */,
+				826A27250A414B1C964C2F3B /* OpenAIManager.swift */,
+				826A27270A414B1C964C2F3D /* AuthManager.swift */,
+				826A27290A414B1C964C2F3F /* Models.swift */,
+				826A272B0A414B1C964C2F41 /* KeychainManager.swift */,
+				826A272D0A414B1C964C2F43 /* MasterIndexView.swift */,
+				826A272F0A414B1C964C2F45 /* CommunicationMatrixView.swift */,
+				826A27310A414B1C964C2F47 /* TemplateLibraryView.swift */,
+				826A27330A414B1C964C2F49 /* PriorityBoardView.swift */,
+				826A27350A414B1C964C2F4B /* NarrativeLibraryView.swift */,
+				826A27370A414B1C964C2F4D /* ConfidentialPlaybookView.swift */,
+				826A27390A414B1C964C2F4F /* AuthView.swift */,
+				826A273B0A414B1C964C2F51 /* SettingsView.swift */,
+				826A270F0A414B1C964C2F25 /* Assets.xcassets */,
+				826A27130A414B1C964C2F29 /* Info.plist */,
+				826A27110A414B1C964C2F27 /* Preview Assets.xcassets */,
 			);
 			path = ReadyaimgoHub;
 			sourceTree = "<group>";
 		};
-		A1234567890123456789012J /* Products */ = {
+		826A27170A414B1C964C2F2D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890123456789012A /* ReadyaimgoHub.app */,
+				826A27120A414B1C964C2F28 /* ReadyaimgoHub.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,13 +103,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1234567890123456789012K /* ReadyaimgoHub */ = {
+		826A27180A414B1C964C2F2E /* ReadyaimgoHub */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1234567890123456789012L /* Build configuration list for PBXNativeTarget "ReadyaimgoHub" */;
+			buildConfigurationList = 826A27190A414B1C964C2F2F /* Build configuration list for PBXNativeTarget "ReadyaimgoHub" */;
 			buildPhases = (
-				A1234567890123456789012M /* Sources */,
-				A1234567890123456789012G /* Frameworks */,
-				A1234567890123456789012N /* Resources */,
+				826A271A0A414B1C964C2F30 /* Sources */,
+				826A27140A414B1C964C2F2A /* Frameworks */,
+				826A271B0A414B1C964C2F31 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -111,25 +117,25 @@
 			);
 			name = ReadyaimgoHub;
 			productName = ReadyaimgoHub;
-			productReference = A1234567890123456789012A /* ReadyaimgoHub.app */;
+			productReference = 826A27120A414B1C964C2F28 /* ReadyaimgoHub.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A1234567890123456789012O /* Project object */ = {
+		826A271C0A414B1C964C2F32 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					A1234567890123456789012K = {
+					826A27180A414B1C964C2F2E = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = A1234567890123456789012P /* Build configuration list for PBXProject "ReadyaimgoHub" */;
+			buildConfigurationList = 826A271D0A414B1C964C2F33 /* Build configuration list for PBXProject "ReadyaimgoHub" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -137,53 +143,55 @@
 				en,
 				Base,
 			);
-			mainGroup = A1234567890123456789012H;
-			productRefGroup = A1234567890123456789012J /* Products */;
+			mainGroup = 826A27150A414B1C964C2F2B;
+			productRefGroup = 826A27170A414B1C964C2F2D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1234567890123456789012K /* ReadyaimgoHub */,
+				826A27180A414B1C964C2F2E /* ReadyaimgoHub */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A1234567890123456789012N /* Resources */ = {
+		826A271B0A414B1C964C2F31 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1234567890123456789013A /* Preview Assets.xcassets in Resources */,
-				A1234567890123456789012E /* Assets.xcassets in Resources */,
+				826A27100A414B1C964C2F26 /* Preview Assets.xcassets in Resources */,
+				826A270E0A414B1C964C2F24 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A1234567890123456789012M /* Sources */ = {
+		826A271A0A414B1C964C2F30 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1234567890123456789012C /* ContentView.swift */,
-				A1234567890123456789013C /* SupabaseManager.swift */,
-				A1234567890123456789013E /* OpenAIManager.swift */,
-				A1234567890123456789014A /* Models.swift */,
-				A1234567890123456789014C /* MasterIndexView.swift */,
-				A1234567890123456789014E /* CommunicationMatrixView.swift */,
-				A1234567890123456789015A /* TemplateLibraryView.swift */,
-				A1234567890123456789015C /* PriorityBoardView.swift */,
-				A1234567890123456789015E /* NarrativeLibraryView.swift */,
-				A1234567890123456789015F /* ConfidentialPlaybookView.swift */,
-				A1234567890123456789016A /* AuthView.swift */,
-				A1234567890123456789016C /* KeychainManager.swift */,
-				A1234567890123456789012A /* ReadyaimgoHubApp.swift */,
+				826A270A0A414B1C964C2F20 /* ReadyaimgoHubApp.swift in Sources */,
+				826A270C0A414B1C964C2F22 /* ContentView.swift in Sources */,
+				826A27220A414B1C964C2F38 /* SupabaseManager.swift in Sources */,
+				826A27240A414B1C964C2F3A /* OpenAIManager.swift in Sources */,
+				826A27260A414B1C964C2F3C /* AuthManager.swift in Sources */,
+				826A27280A414B1C964C2F3E /* Models.swift in Sources */,
+				826A272A0A414B1C964C2F40 /* KeychainManager.swift in Sources */,
+				826A272C0A414B1C964C2F42 /* MasterIndexView.swift in Sources */,
+				826A272E0A414B1C964C2F44 /* CommunicationMatrixView.swift in Sources */,
+				826A27300A414B1C964C2F46 /* TemplateLibraryView.swift in Sources */,
+				826A27320A414B1C964C2F48 /* PriorityBoardView.swift in Sources */,
+				826A27340A414B1C964C2F4A /* NarrativeLibraryView.swift in Sources */,
+				826A27360A414B1C964C2F4C /* ConfidentialPlaybookView.swift in Sources */,
+				826A27380A414B1C964C2F4E /* AuthView.swift in Sources */,
+				826A273A0A414B1C964C2F50 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		A1234567890123456789012Q /* Debug */ = {
+		826A271E0A414B1C964C2F34 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -246,7 +254,7 @@
 			};
 			name = Debug;
 		};
-		A1234567890123456789012R /* Release */ = {
+		826A271F0A414B1C964C2F35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -301,7 +309,7 @@
 			};
 			name = Release;
 		};
-		A1234567890123456789012S /* Debug */ = {
+		826A27200A414B1C964C2F36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -326,7 +334,7 @@
 			};
 			name = Debug;
 		};
-		A1234567890123456789012T /* Release */ = {
+		826A27210A414B1C964C2F37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -354,25 +362,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1234567890123456789012L /* Build configuration list for PBXNativeTarget "ReadyaimgoHub" */ = {
+		826A27190A414B1C964C2F2F /* Build configuration list for PBXNativeTarget "ReadyaimgoHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1234567890123456789012S /* Debug */,
-				A1234567890123456789012T /* Release */,
+				826A27200A414B1C964C2F36 /* Debug */,
+				826A27210A414B1C964C2F37 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1234567890123456789012P /* Build configuration list for PBXProject "ReadyaimgoHub" */ = {
+		826A271D0A414B1C964C2F33 /* Build configuration list for PBXProject "ReadyaimgoHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1234567890123456789012Q /* Debug */,
-				A1234567890123456789012R /* Release */,
+				826A271E0A414B1C964C2F34 /* Debug */,
+				826A271F0A414B1C964C2F35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A1234567890123456789012O /* Project object */;
+	rootObject = 826A271C0A414B1C964C2F32 /* Project object */;
 }

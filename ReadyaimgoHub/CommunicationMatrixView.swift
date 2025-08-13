@@ -372,7 +372,6 @@ struct AddCommunicationView: View {
                 }
             }
             .navigationTitle("Add Communication")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -443,7 +442,6 @@ struct AIAnalysisView: View {
             }
             .padding()
             .navigationTitle("AI Analysis")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {

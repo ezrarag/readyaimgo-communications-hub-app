@@ -182,9 +182,12 @@ struct TemplateCardView: View {
             
             // Short Version
             if isEditing {
-                TextField("Short Version", text: $editedTemplate.shortVersion, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .lineLimit(3...6)
+                if #available(macOS 13.0, *) {
+                    TextField("Short Version", text: $editedTemplate.shortVersion, axis: .vertical)
+                        .lineLimit(3...6)
+                } else {
+                    TextField("Short Version", text: $editedTemplate.shortVersion)
+                }
             } else {
                 Text(template.shortVersion)
                     .font(.body)
@@ -211,7 +214,7 @@ struct TemplateCardView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .padding()
-                            .background(Color(.secondarySystemBackground))
+                            .background(Color(NSColor.controlBackgroundColor))
                             .cornerRadius(8)
                     }
                 }
@@ -300,7 +303,7 @@ struct TemplateCardView: View {
             }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
+        .background(Color(NSColor.controlBackgroundColor))
         .cornerRadius(12)
     }
 }
@@ -320,42 +323,43 @@ struct AddTemplateView: View {
                         }
                     }
                     
-                    TextField("Short Version", text: $template.shortVersion, axis: .vertical)
-                        .lineLimit(3...6)
-                }
-                
-                Section("Long Version (Optional)") {
-                    TextField("Long Version", text: Binding(
-                        get: { template.longVersion ?? "" },
-                        set: { template.longVersion = $0.isEmpty ? nil : $0 }
-                    ), axis: .vertical)
-                    .lineLimit(5...10)
-                }
-                
-                Section("Confidential Version (Optional)") {
-                    TextField("Confidential Version", text: Binding(
-                        get: { template.confidentialVersion ?? "" },
-                        set: { template.confidentialVersion = $0.isEmpty ? nil : $0 }
-                    ), axis: .vertical)
-                    .lineLimit(5...10)
+                    Section("Template Content") {
+                        if #available(macOS 13.0, *) {
+                            TextField("Short Version", text: $template.shortVersion, axis: .vertical)
+                                .lineLimit(3...6)
+                        } else {
+                            TextField("Short Version", text: $template.shortVersion)
+                        }
+                        
+                        if #available(macOS 13.0, *) {
+                            TextField("Long Version", text: Binding(
+                                get: { template.longVersion ?? "" },
+                                set: { template.longVersion = $0.isEmpty ? nil : $0 }
+                            ), axis: .vertical)
+                            .lineLimit(5...10)
+                        } else {
+                            TextField("Long Version", text: Binding(
+                                get: { template.longVersion ?? "" },
+                                set: { template.longVersion = $0.isEmpty ? nil : $0 }
+                            ))
+                        }
+                        
+                        if #available(macOS 13.0, *) {
+                            TextField("Confidential Version", text: Binding(
+                                get: { template.confidentialVersion ?? "" },
+                                set: { template.confidentialVersion = $0.isEmpty ? nil : $0 }
+                            ), axis: .vertical)
+                            .lineLimit(5...10)
+                        } else {
+                            TextField("Confidential Version", text: Binding(
+                                get: { template.confidentialVersion ?? "" },
+                                set: { template.confidentialVersion = $0.isEmpty ? nil : $0 }
+                            ))
+                        }
+                    }
                 }
             }
             .navigationTitle("Add Template")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-                
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        onSave()
-                    }
-                    .disabled(template.category.isEmpty || template.shortVersion.isEmpty)
-                }
-            }
         }
         .frame(width: 500, height: 400)
     }
@@ -424,10 +428,9 @@ struct GenerateTemplateView: View {
                             }
                             .pickerStyle(.menu)
                             
-                            TextField("Purpose", text: $purpose, placeholder: "e.g., Client update, Investor pitch")
-                                .textFieldStyle(.roundedBorder)
+                            TextField("Purpose", text: $purpose)
                             
-                            TextField("Key Points (comma separated)", text: $keyPoints, placeholder: "e.g., Project milestone, Timeline update")
+                            TextField("Key Points (comma separated)", text: $keyPoints)
                                 .textFieldStyle(.roundedBorder)
                         }
                         
@@ -441,7 +444,6 @@ struct GenerateTemplateView: View {
             }
             .padding()
             .navigationTitle("AI Template Generator")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
@@ -458,9 +460,9 @@ struct GenerateTemplateView: View {
         
         Task {
             if let result = await openAIManager.generateTemplate(
-                category: selectedCategory.displayName,
                 purpose: purpose,
-                keyPoints: keyPoints.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                audience: selectedCategory.displayName,
+                tone: "professional"
             ) {
                 generatedTemplate = result
             }

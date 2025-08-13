@@ -184,4 +184,27 @@ class OpenAIManager: ObservableObject {
         
         return await sendMessage(prompt, systemPrompt: "You are a professional communications expert. Analyze messaging effectiveness and provide constructive feedback.")
     }
+    
+    func analyzeCommunication(communication: Communication) async -> String? {
+        // Mock implementation - would typically call OpenAI API
+        return "This is a mock analysis of the communication. In production, this would analyze the content using OpenAI's API."
+    }
+    
+    func generateTemplate(purpose: String, audience: String, tone: String) async -> String? {
+        // Mock implementation - would typically call OpenAI API
+        return """
+        Here's a mock template for \(purpose) targeting \(audience) with a \(tone) tone:
+        
+        Dear [Recipient],
+        
+        I hope this message finds you well. I'm reaching out regarding [specific purpose].
+        
+        [Main content would be generated here based on the purpose, audience, and tone parameters]
+        
+        Thank you for your time and consideration.
+        
+        Best regards,
+        [Your Name]
+        """
+    }
 }

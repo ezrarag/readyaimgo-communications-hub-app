@@ -92,7 +92,7 @@ struct ConfidentialPlaybookView: View {
                                 .font(.body)
                                 .frame(minHeight: 400)
                                 .padding(8)
-                                .background(Color(.secondarySystemBackground))
+                                .background(Color(.windowBackgroundColor))
                                 .cornerRadius(8)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
@@ -146,7 +146,7 @@ struct ConfidentialPlaybookView: View {
                                         .multilineTextAlignment(.center)
                                 }
                                 .frame(maxWidth: .infinity, minHeight: 400)
-                                .background(Color(.tertiarySystemBackground))
+                                .background(Color(.controlBackgroundColor))
                                 .cornerRadius(12)
                             } else {
                                 ScrollView {
@@ -155,7 +155,7 @@ struct ConfidentialPlaybookView: View {
                                         .multilineTextAlignment(.leading)
                                         .padding()
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                        .background(Color(.secondarySystemBackground))
+                                        .background(Color(.windowBackgroundColor))
                                         .cornerRadius(12)
                                 }
                                 .frame(maxHeight: 400)
