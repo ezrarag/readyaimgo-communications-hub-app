@@ -44,7 +44,7 @@ export async function postToSlack({
     await client.chat.postMessage({
       channel,
       text,
-      blocks,
+      ...(blocks && blocks.length > 0 ? { blocks } : {}),
     });
   } catch (error) {
     console.error('Error posting to Slack:', error);
