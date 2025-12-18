@@ -60,9 +60,6 @@ export function getAdminDb(): Firestore {
   return initializeFirebaseAdmin();
 }
 
-// Export db instance for convenience
-export const adminDb = initializeFirebaseAdmin();
-
 
 
 
