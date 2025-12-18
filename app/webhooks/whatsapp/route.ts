@@ -14,6 +14,10 @@ import type {
 } from '@/types/whatsapp';
 import { findClientByWhatsAppNumber, createClientMessage } from '@/lib/clientComms';
 import { verifyMetaWebhookSignature } from '@/lib/webhookVerification';
+import {
+  postToSlack,
+  formatWhatsAppMessageForSlack,
+} from '@/lib/slack';
 
 /**
  * GET /webhooks/whatsapp
@@ -197,17 +201,62 @@ async function processWhatsAppMessage(
     const client = await findClientByWhatsAppNumber(from);
     const clientId = client?.clientId || null;
 
+    // Post to Slack immediately (before saving to Firestore)
+    if (client) {
+      // Client found - post to client's Slack channel
+      const { text: slackText, blocks } = formatWhatsAppMessageForSlack({
+        from,
+        body: text || body || '',
+        clientName: client.displayName,
+      });
+
+      await postToSlack({
+        channel: client.slackChannelId,
+        text: slackText,
+        blocks,
+      });
+
+      console.log(
+        `Message from ${from} mapped to client ${client.clientId}, posted to Slack channel ${client.slackChannelId}`
+      );
+    } else {
+      // Client not found - post to fallback channel
+      const fallbackChannelId = process.env.SLACK_FALLBACK_CHANNEL_ID;
+
+      if (fallbackChannelId) {
+        const { text: slackText, blocks } = formatWhatsAppMessageForSlack({
+          from,
+          body: text || body || '',
+        });
+
+        const warningText = `⚠️ Unmapped WhatsApp sender\n${slackText}`;
+        const warningBlocks = [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: '*⚠️ Unmapped WhatsApp sender*',
+            },
+          },
+          ...blocks,
+        ];
+
+        await postToSlack({
+          channel: fallbackChannelId,
+          text: warningText,
+          blocks: warningBlocks,
+        });
+
+        console.log(`Unmapped message from ${from}, posted to fallback channel`);
+      }
+    }
+
     // Prepare Firestore document
-    // Note: Using status: "received" per requirements
-    // To enable automatic Slack posting, either:
-    // 1. Change this to status: "pending" (triggers Firestore function)
-    // 2. Update Firestore trigger to accept "received" status
-    // 3. Add a separate process to update status to "pending"
     const messageData = {
       clientId,
       channel: 'whatsapp',
       source: 'whatsapp',
-      status: 'received', // Per requirements - change to "pending" for auto Slack posting
+      status: 'received',
       from,
       text,
       body,
