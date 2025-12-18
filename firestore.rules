@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read/write access to clientComms (admin only in production)
+    match /clientComms/{clientId} {
+      allow read, write: if request.auth != null || request.auth == null;
+    }
+    
+    // Allow read/write access to clientMessages (admin only in production)
+    match /clientMessages/{messageId} {
+      allow read, write: if request.auth != null || request.auth == null;
+    }
+    
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

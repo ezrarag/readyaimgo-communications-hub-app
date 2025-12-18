@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "your-project-id",
+    "prod": "readyaimgo-clients-temp"
+  },
+  "targets": {},
+  "etags": {}
+}
