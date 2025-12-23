@@ -2,6 +2,13 @@
  * Meta WhatsApp Cloud API Webhook Handler
  * Production endpoint: https://<YOUR_DOMAIN>/webhooks/whatsapp
  * 
+ * CRITICAL CONSTRAINTS:
+ * - /webhooks/whatsapp must remain public (no auth)
+ * - GET = verification only
+ * - POST = async, fast 200, side effects only
+ * - Slack posting must never block response
+ * - Firestore writes must never block response
+ * 
  * Handles:
  * - GET: Webhook verification (Meta subscription)
  * - POST: Message receiving and Firestore storage
@@ -67,11 +74,19 @@ export async function GET(request: NextRequest) {
  * POST /webhooks/whatsapp
  * Message receive endpoint for Meta WhatsApp Cloud API
  * 
- * Requirements:
- * - Respond 200 quickly (before processing)
- * - Verify X-Hub-Signature-256 header
- * - Parse payload and write to Firestore clientMessages collection
- * - Include: clientId, channel: "whatsapp", createdAt, status: "received", raw, text/body
+ * CRITICAL CONSTRAINTS (stable public contract):
+ * - Must remain public (no auth middleware)
+ * - Must respond 200 immediately (before any processing)
+ * - All side effects (Slack, Firestore) must be async/non-blocking
+ * - Slack posting must never block response
+ * - Firestore writes must never block response
+ * 
+ * Implementation:
+ * - Verify X-Hub-Signature-256 header (if META_APP_SECRET configured)
+ * - Respond 200 OK immediately
+ * - Process payload asynchronously (fire-and-forget)
+ * - Write to Firestore clientMessages collection
+ * - Post to Slack channels (parallel with Firestore, non-blocking)
  */
 export async function POST(request: NextRequest) {
   // Get raw body for signature verification
@@ -201,7 +216,31 @@ async function processWhatsAppMessage(
     const client = await findClientByWhatsAppNumber(from);
     const clientId = client?.clientId || null;
 
-    // Post to Slack immediately (before saving to Firestore)
+    // Prepare Firestore document
+    const messageData = {
+      clientId,
+      channel: 'whatsapp',
+      source: 'whatsapp',
+      status: 'received',
+      from,
+      text,
+      body,
+      timestamp,
+      messageId,
+      raw: {
+        phoneNumberId: context.phoneNumberId,
+        displayPhoneNumber: context.displayPhoneNumber,
+        profileName,
+        messageType: message.type,
+        fullPayload: context.rawPayload,
+      },
+    };
+
+    // Fire Slack and Firestore operations in parallel (fire-and-forget)
+    // Neither operation blocks the HTTP response (already sent)
+    // They also don't block each other
+    
+    // Post to Slack (non-blocking)
     if (client) {
       // Client found - post to client's Slack channel
       const { text: slackText, blocks } = formatWhatsAppMessageForSlack({
@@ -210,14 +249,16 @@ async function processWhatsAppMessage(
         clientName: client.displayName,
       });
 
-      await postToSlack({
+      postToSlack({
         channel: client.slackChannelId,
         text: slackText,
         blocks,
+      }).catch((error) => {
+        console.error(`Error posting to Slack channel ${client.slackChannelId}:`, error);
       });
 
       console.log(
-        `Message from ${from} mapped to client ${client.clientId}, posted to Slack channel ${client.slackChannelId}`
+        `Message from ${from} mapped to client ${client.clientId}, posting to Slack channel ${client.slackChannelId}`
       );
     } else {
       // Client not found - post to fallback channel
@@ -241,38 +282,22 @@ async function processWhatsAppMessage(
           ...blocks,
         ];
 
-        await postToSlack({
+        postToSlack({
           channel: fallbackChannelId,
           text: warningText,
           blocks: warningBlocks,
+        }).catch((error) => {
+          console.error(`Error posting to Slack fallback channel:`, error);
         });
 
-        console.log(`Unmapped message from ${from}, posted to fallback channel`);
+        console.log(`Unmapped message from ${from}, posting to fallback channel`);
       }
     }
 
-    // Prepare Firestore document
-    const messageData = {
-      clientId,
-      channel: 'whatsapp',
-      source: 'whatsapp',
-      status: 'received',
-      from,
-      text,
-      body,
-      timestamp,
-      messageId,
-      raw: {
-        phoneNumberId: context.phoneNumberId,
-        displayPhoneNumber: context.displayPhoneNumber,
-        profileName,
-        messageType: message.type,
-        fullPayload: context.rawPayload,
-      },
-    };
-
-    // Write to Firestore
-    await createClientMessage(messageData);
+    // Write to Firestore (non-blocking)
+    createClientMessage(messageData).catch((error) => {
+      console.error('Error writing to Firestore:', error);
+    });
 
     console.log('WhatsApp message saved to Firestore', {
       messageId,

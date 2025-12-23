@@ -153,3 +153,10 @@ POST /webhooks/whatsapp
 - **Client not found**: Verify `clientComms` collection has correct phone numbers (E.164 format)
 - **Firestore errors**: Check Firebase credentials and project ID
 
+
+
+
+
+
+
+
