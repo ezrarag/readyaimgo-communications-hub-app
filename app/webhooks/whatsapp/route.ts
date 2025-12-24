@@ -118,8 +118,10 @@ export async function POST(request: NextRequest) {
   });
 
   // Process payload asynchronously (don't await)
+  console.log('Starting async webhook payload processing');
   processWebhookPayload(rawBody).catch((error) => {
     console.error('Error processing webhook payload:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     // Log error but don't retry (we already responded 200)
   });
 
@@ -132,7 +134,13 @@ export async function POST(request: NextRequest) {
  */
 async function processWebhookPayload(rawBody: string): Promise<void> {
   try {
+    console.log('Processing webhook payload, rawBody length:', rawBody.length);
     const body: WhatsAppWebhookPayload = JSON.parse(rawBody);
+    console.log('Parsed payload:', {
+      object: body.object,
+      hasEntry: !!body.entry,
+      entryCount: body.entry?.length || 0,
+    });
 
     // Validate payload structure
     if (!body.object || !body.entry || !Array.isArray(body.entry)) {
@@ -140,6 +148,7 @@ async function processWebhookPayload(rawBody: string): Promise<void> {
         hasObject: !!body.object,
         hasEntry: !!body.entry,
         entryIsArray: Array.isArray(body.entry),
+        rawBodyPreview: rawBody.substring(0, 200),
       });
       return;
     }
@@ -151,8 +160,15 @@ async function processWebhookPayload(rawBody: string): Promise<void> {
       }
 
       for (const change of entry.changes) {
+        console.log('Processing change:', {
+          field: change.field,
+          hasMessages: !!change.value?.messages,
+          messageCount: change.value?.messages?.length || 0,
+        });
+        
         // Only process messages, ignore status updates
         if (change.field !== 'messages' || !change.value.messages) {
+          console.log('Skipping change - not a message field or no messages');
           continue;
         }
 
@@ -160,8 +176,15 @@ async function processWebhookPayload(rawBody: string): Promise<void> {
         const phoneNumberId = change.value.metadata?.phone_number_id;
         const displayPhoneNumber = change.value.metadata?.display_phone_number;
 
+        console.log(`Processing ${messages.length} message(s)`);
+        
         // Process each message
         for (const message of messages) {
+          console.log('Processing message:', {
+            from: message.from,
+            type: message.type,
+            messageId: message.id,
+          });
           await processWhatsAppMessage(message, {
             phoneNumberId,
             displayPhoneNumber,
@@ -213,8 +236,14 @@ async function processWhatsAppMessage(
       message.profile?.name;
 
     // Look up client by WhatsApp number
+    console.log(`Looking up client for WhatsApp number: ${from}`);
     const client = await findClientByWhatsAppNumber(from);
     const clientId = client?.clientId || null;
+    console.log('Client lookup result:', {
+      found: !!client,
+      clientId: clientId,
+      slackChannelId: client?.slackChannelId || 'none',
+    });
 
     // Prepare Firestore document
     const messageData = {
